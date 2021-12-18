@@ -59,7 +59,7 @@ let g:ale_cpp_cppcheck_options = ''
 map <F10> :NERDTreeToggle<CR>
 map <C-a> ggvG$
 "only on OSX
-"vmap <C-c> y:w !pbcopy<CR><CR>
+vmap <C-c> y:w !pbcopy<CR><CR>
 
 "only on wsl
 "vmap <C-c> :'<,'>w !/mnt/c/Windows/System32/clip.exe<CR><CR>
@@ -84,8 +84,8 @@ func SetTitle()
 	call setline(6,"#define rep(i, a, b) for (int i = (a); i <= (b); ++i)")
 	call setline(7,"#define per(i, a, b) for (int i = (a); i >= (b); --i)")
 	call setline(8,"#ifdef LOCAL")
-	call setline(9,"");
-    call setline(10,"");
+	call setline(9,"")
+    call setline(10,"")
     
     "only on Linux(green output)
     "call setline(9,"#define cout cout<<\"\\033[32m\"")
