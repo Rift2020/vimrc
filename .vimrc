@@ -66,9 +66,10 @@ vmap <C-c> y:w !pbcopy<CR><CR>
 
 nnoremap <F9> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
-exec "wall"
-exec '!g++ % -o %< -std=c++17 -D LOCAL'
-exec '!time ./%<'
+	:w
+	exec "wall"
+	exec '!g++ % -o %< -std=c++17 -D LOCAL'
+	exec '!time ./%<'
 endfunc
 autocmd BufNewFile *.cpp exec ":call SetTitle()"
 func SetComment()
@@ -87,9 +88,9 @@ func SetTitle()
 	call setline(9,"")
     call setline(10,"")
     
-    "only on Linux(green output)
-    "call setline(9,"#define cout cout<<\"\\033[32m\"")
-	"call setline(10,"#define endl \"\\033[0m\"<<endl")
+    "only on Linux||OSX (green output)
+    call setline(9,"#define cout cout<<\"\\033[32m\"")
+	call setline(10,"#define endl \"\\033[0m\"<<endl")
 	
     call setline(11,"#endif")
 	call setline(12,"using namespace std;")
@@ -101,8 +102,11 @@ func SetTitle()
 	call setline(18,"")
 	call setline(19,"")
 	call setline(20,"")
-	call setline(21,"	return 0;")
-	call setline(22,"}")
-	call cursor(12,1)	
+	call setline(21,"	#ifdef LOCAL")
+	call setline(22,"	fflush(stdio);getchar();")
+	call setline(23,"	#endif")
+	call setline(24,"	return 0;")
+	call setline(25,"}")
+	call cursor(14,1)	
 endfunc
 
