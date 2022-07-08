@@ -1,7 +1,8 @@
-set nocompatible
+"启用插件
+set nocompatible 
 filetype plugin on
-set number
-set noshowmode
+
+set number 
 set tabstop=4
 set shiftwidth=4
 set autoindent
@@ -13,33 +14,14 @@ set backspace=2
 set softtabstop=4
 syntax on
 
-
-"Plugin List
+"插件
 call plug#begin('~/.vim/plugged')
 Plug 'jiangmiao/auto-pairs'
 Plug 'preservim/nerdtree'
-Plug 'Valloric/YouCompleteMe'
-Plug 'dense-analysis/ale'
 Plug 'vim-airline/vim-airline'
+Plug 'dense-analysis/ale'
 call plug#end()
 
-"ycm set
-let g:ycm_min_num_identifier_candidate_chars = 3
-let g:ycm_key_invoke_completion = '<c-z>'
-let g:ycm_semantic_triggers =  {
-             \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-             \ 'cs,lua,javascript': ['re!\w{2}'],
-             \ }
-set completeopt=menu,menuone
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_filetype_whitelist = { 
-			\ "c":1,
-			\ "cpp":1,
-			\ "sh":1,
-			\ }
-highlight PMenu ctermfg=0 ctermbg=242 guifg=black guibg=DeepSkyBlue4
-highlight PMenuSel ctermfg=242 ctermbg=8 guifg=DeepSkyBlue4 guibg=black
 "ale set
 let g:ale_completion_delay = 500
 let g:ale_echo_delay = 20
@@ -54,24 +36,28 @@ let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++17'
 let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
 
-
-"key map
-map <F10> :NERDTreeToggle<CR>
-map <C-a> ggvG$
-"only on OSX
-vmap <C-c> y:w !pbcopy<CR><CR>
-
-"only on wsl
-"vmap <C-c> :'<,'>w !/mnt/c/Windows/System32/clip.exe<CR><CR>
-
+"键位映射
+"F2调用文件树插件
+map <F2> :NERDTreeToggle<CR>
+"ctrl+a直接全选复制到系统剪切板 
+map <C-a> ggvG"+y"
+"F9编译并运行
 nnoremap <F9> :call CompileRunGcc()<CR>
+
+"将当前文件<filename>.cpp 
+"以c++17标准编译，输出重定向到 <filename>output文件中
+"待程序结束后，在末尾打印所有的程序输出
+"并且删除所有的中间文件(<filename>,<filename>output)
 func! CompileRunGcc()
 	:w
 	exec "wall"
-	exec '!g++ % -o %< -std=c++17 -D LOCAL'
-	exec '!time ./%<'
+	exec '!g++ % -o %< -std=c++17 -D LOCAL;./%< >%<output;echo -e "\033[34moutput is:\033[0m";cat %<output;rm %<output %<'
+
 endfunc
+
+"在创建一个新cpp文件时，自动加上作者，创建时间，和代码模板
 autocmd BufNewFile *.cpp exec ":call SetTitle()"
+
 func SetComment()
 	call setline(1,"/**")
 	call setline(2," *    author:  Rift")
@@ -84,29 +70,15 @@ func SetTitle()
 	call setline(5,"#include<bits/stdc++.h>")
 	call setline(6,"#define rep(i, a, b) for (int i = (a); i <= (b); ++i)")
 	call setline(7,"#define per(i, a, b) for (int i = (a); i >= (b); --i)")
-	call setline(8,"#ifdef LOCAL")
-	call setline(9,"")
-    call setline(10,"")
-    
-    "only on Linux||OSX (green output)
-    call setline(9,"#define cout cout<<\"\\033[32m\"")
-	call setline(10,"#define endl \"\\033[0m\"<<endl")
-	
-    call setline(11,"#endif")
-	call setline(12,"using namespace std;")
-	call setline(13,"using ll = long long;")
+	call setline(8,"using namespace std;")
+	call setline(9,"using ll = long long;")
+	call setline(10,"")
+	call setline(11,"signed main(){")
+	call setline(12,"	ios::sync_with_stdio(false);")
+	call setline(13,"	cin.tie(nullptr);")
 	call setline(14,"")
-	call setline(15,"signed main(){")
-	call setline(16,"	ios::sync_with_stdio(false);")
-	call setline(17,"	cin.tie(nullptr);")
-	call setline(18,"")
-	call setline(19,"")
-	call setline(20,"")
-	call setline(21,"	#ifdef LOCAL")
-	call setline(22,"	fflush(stdio);getchar();")
-	call setline(23,"	#endif")
-	call setline(24,"	return 0;")
-	call setline(25,"}")
-	call cursor(14,1)	
-endfunc
-
+	call setline(15,"")
+	call setline(16,"")
+	call setline(17,"}")
+	call cursor(10,1)
+e
