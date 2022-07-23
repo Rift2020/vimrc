@@ -20,7 +20,15 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'preservim/nerdtree'
 Plug 'vim-airline/vim-airline'
 Plug 'dense-analysis/ale'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'mzlogin/vim-markdown-toc'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
 call plug#end()
+
+"vim-markdown set
+let g:vim_markdown_math = 1
+let g:vim_markdown_folding_disabled = 1
 
 "ale set
 let g:ale_completion_delay = 500
@@ -36,13 +44,16 @@ let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++17'
 let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
 
+
 "键位映射
 "F2调用文件树插件
 map <F2> :NERDTreeToggle<CR>
 "ctrl+a直接全选复制到系统剪切板 
-map <C-a> ggvG"+y"
+map <C-a> ggvG$"+y
+map <F12> :MarkdownPreview<CR>
 "F9编译并运行
 nnoremap <F9> :call CompileRunGcc()<CR>
+
 
 "将当前文件<filename>.cpp 
 "以c++17标准编译，输出重定向到 <filename>output文件中
@@ -70,15 +81,17 @@ func SetTitle()
 	call setline(5,"#include<bits/stdc++.h>")
 	call setline(6,"#define rep(i, a, b) for (int i = (a); i <= (b); ++i)")
 	call setline(7,"#define per(i, a, b) for (int i = (a); i >= (b); --i)")
-	call setline(8,"using namespace std;")
-	call setline(9,"using ll = long long;")
-	call setline(10,"")
-	call setline(11,"signed main(){")
-	call setline(12,"	ios::sync_with_stdio(false);")
-	call setline(13,"	cin.tie(nullptr);")
-	call setline(14,"")
+	call setline(8,"#define x first")
+	call setline(9,"#define y second")
+	call setline(10,"using namespace std;")
+	call setline(11,"using ll = long long;")
+	call setline(12,"")
+	call setline(13,"signed main(){")
+	call setline(14,"	ios::sync_with_stdio(false),cin.tie(nullptr);")
 	call setline(15,"")
 	call setline(16,"")
-	call setline(17,"}")
-	call cursor(10,1)
-e
+	call setline(17,"")
+	call setline(18,"")
+	call setline(19,"}")
+	call cursor(12,1)
+endfunc
