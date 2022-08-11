@@ -62,7 +62,7 @@ nnoremap <F9> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
 	:w
 	exec "wall"
-	exec '!g++ % -o %< -std=c++17 -D LOCAL;./%< >%<output;echo -e "\033[34moutput is:\033[0m";cat %<output;rm %<output %<'
+	exec '!g++ % -o %< -std=c++17 -D LOCAL;./%< >%<output;echo -e "\033[34mexit code = $?,output is:\033[0m";cat %<output;rm %<output %<'
 
 endfunc
 
